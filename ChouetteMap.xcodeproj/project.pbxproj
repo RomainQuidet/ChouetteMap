@@ -19,6 +19,8 @@
 		7A21FE2520B48BCB008B0C80 /* CMCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A21FE2420B48BCB008B0C80 /* CMCircle.swift */; };
 		7A21FE2720B48FFC008B0C80 /* CMLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A21FE2620B48FFC008B0C80 /* CMLine.swift */; };
 		7A21FE2C20B49BCE008B0C80 /* defaultMap.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7A21FE2B20B49BCE008B0C80 /* defaultMap.jpg */; };
+		7A21FE2F20B49EDB008B0C80 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A21FE2E20B49EDB008B0C80 /* MapView.swift */; };
+		7A21FE3120B4AAFC008B0C80 /* MapImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A21FE3020B4AAFC008B0C80 /* MapImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,8 @@
 		7A21FE2420B48BCB008B0C80 /* CMCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMCircle.swift; sourceTree = "<group>"; };
 		7A21FE2620B48FFC008B0C80 /* CMLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMLine.swift; sourceTree = "<group>"; };
 		7A21FE2B20B49BCE008B0C80 /* defaultMap.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = defaultMap.jpg; sourceTree = "<group>"; };
+		7A21FE2E20B49EDB008B0C80 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		7A21FE3020B4AAFC008B0C80 /* MapImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,7 @@
 		7A21FE0820B406BC008B0C80 /* ChouetteMap */ = {
 			isa = PBXGroup;
 			children = (
+				7A21FE2D20B49EC2008B0C80 /* Map */,
 				7A21FE1D20B44139008B0C80 /* Model */,
 				7A21FE0920B406BC008B0C80 /* AppDelegate.swift */,
 				7A21FE1920B416A9008B0C80 /* MainWindowController.swift */,
@@ -101,6 +106,15 @@
 				7A21FE2B20B49BCE008B0C80 /* defaultMap.jpg */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		7A21FE2D20B49EC2008B0C80 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				7A21FE2E20B49EDB008B0C80 /* MapView.swift */,
+				7A21FE3020B4AAFC008B0C80 /* MapImageView.swift */,
+			);
+			path = Map;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,6 +195,8 @@
 				7A21FE2520B48BCB008B0C80 /* CMCircle.swift in Sources */,
 				7A21FE2320B442CD008B0C80 /* CMPoint.swift in Sources */,
 				7A21FE2120B442A6008B0C80 /* CMLayer.swift in Sources */,
+				7A21FE2F20B49EDB008B0C80 /* MapView.swift in Sources */,
+				7A21FE3120B4AAFC008B0C80 /* MapImageView.swift in Sources */,
 				7A21FE1F20B44158008B0C80 /* MainModel.swift in Sources */,
 				7A21FE1A20B416A9008B0C80 /* MainWindowController.swift in Sources */,
 			);

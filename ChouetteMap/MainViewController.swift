@@ -10,8 +10,8 @@ import Cocoa
 
 class MainViewController: NSViewController {
 	
-	private let scrollView = NSScrollView(frame: .zero)
-	private let model: MainModel
+	private let mapView = MapView(frame: .zero)
+	private var model: MainModel
 	
 	//MARK: - Lifecycle
 	
@@ -31,17 +31,12 @@ class MainViewController: NSViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		scrollView.backgroundColor = .black
-		scrollView.translatesAutoresizingMaskIntoConstraints = false
-		scrollView.borderType = .bezelBorder
-		scrollView.usesPredominantAxisScrolling = true
-		scrollView.hasVerticalScroller = true
-		scrollView.hasHorizontalScroller = true
-		self.view.addSubview(scrollView)
-		scrollView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-		scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-		scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-		scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+		mapView.translatesAutoresizingMaskIntoConstraints = false
+		self.view.addSubview(mapView)
+		mapView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+		mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+		mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+		mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
 		
 		self.loadModel()
 	}
@@ -52,7 +47,7 @@ class MainViewController: NSViewController {
 	}
 	
 	override func viewDidAppear() {
-		scrollView.flashScrollers()
+		mapView.flashScrollers()
 	}
 
 	override var representedObject: Any? {
@@ -68,7 +63,16 @@ class MainViewController: NSViewController {
 	}
 	
 	func zoom(_ direction: MainToolbar.ZoomDirection) {
-		debugPrint("zoom !!")
+		let step: CGFloat = 0.3
+		if direction == .plus {
+			self.model.lastZoom += step
+		}
+		else
+		{
+			self.model.lastZoom -= step
+		}
+		
+		mapView.magnification = self.model.lastZoom
 	}
 	
 	//MARK: - Private
@@ -77,10 +81,8 @@ class MainViewController: NSViewController {
 		guard let image = NSImage(contentsOfFile: self.model.mapPath) else {
 			return
 		}
-		let size = image.size
-		let imageView = NSImageView(image: image)
-		imageView.frame = NSMakeRect(0, 0, size.width, size.height)
-		scrollView.documentView = imageView
+		mapView.loadMap(image)
+		mapView.magnification = self.model.lastZoom
 	}
 }
 
