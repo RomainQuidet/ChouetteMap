@@ -11,6 +11,8 @@ import Cocoa
 protocol MainToolbarDelegate: class {
 	func didZoom(direction: MainToolbar.ZoomDirection)
 	func didAskMapLoad()
+	func didAskWorkSave()
+	func didAskWorkLoad()
 }
 
 fileprivate extension MainToolbar.ZoomDirection {
@@ -26,7 +28,7 @@ fileprivate extension MainToolbar.ZoomDirection {
 	}
 }
 
-fileprivate extension MainToolbar.FileItem {
+fileprivate extension MainToolbar.MapFileItem {
 	var string: String {
 		get {
 			switch self {
@@ -34,6 +36,19 @@ fileprivate extension MainToolbar.FileItem {
 				return "Map"
 			case .ratio:
 				return "Ratio"
+			}
+		}
+	}
+}
+
+fileprivate extension MainToolbar.WorkFileItem {
+	var string: String {
+		get {
+			switch self {
+			case .load:
+				return "Load"
+			case .save:
+				return "Save"
 			}
 		}
 	}
@@ -48,18 +63,23 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	enum Geometry: Int {
 		case pointSingle = 0, pointSymetric, circleFromCenterRadius
 	}
-	enum FileItem: Int {
+	enum MapFileItem: Int {
 		case map = 0, ratio
 	}
 	
+	enum WorkFileItem: Int {
+		case load = 0, save
+	}
+	
 	private enum ItemsIdentifiers: String {
-		case GeometryItems, ZoomItems, SpaceItem, FileItems
+		case GeometryItems, ZoomItems, SpaceItem, MapFileItem, WorkFileItem
 	}
 	
 	private let availableItemsIdentifiers: [NSToolbarItem.Identifier]
 	private let allowedItemIds = [ItemsIdentifiers.GeometryItems,
 								  ItemsIdentifiers.ZoomItems,
-								  ItemsIdentifiers.FileItems]
+								  ItemsIdentifiers.MapFileItem,
+								  ItemsIdentifiers.WorkFileItem]
 
 	override init(identifier: NSToolbar.Identifier) {
 		self.availableItemsIdentifiers = allowedItemIds.map({ (itemIdentifier) -> NSToolbarItem.Identifier in
@@ -91,11 +111,19 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 				let item = NSToolbarItem(itemIdentifier: .init(itemIdentifier.rawValue))
 				item.view = segmentedControl
 				return item
-			case .FileItems:
-				let segmentedControl = NSSegmentedControl(labels: [FileItem.map.string, FileItem.ratio.string],
+			case .MapFileItem:
+				let segmentedControl = NSSegmentedControl(labels: [MapFileItem.map.string, MapFileItem.ratio.string],
 														  trackingMode: .momentary,
 														  target: self,
-														  action: #selector(didSelectFileItem))
+														  action: #selector(didSelectMapFileItem))
+				let item = NSToolbarItem(itemIdentifier: .init(itemIdentifier.rawValue))
+				item.view = segmentedControl
+				return item
+			case .WorkFileItem:
+				let segmentedControl = NSSegmentedControl(labels: [WorkFileItem.load.string, WorkFileItem.save.string],
+														  trackingMode: .momentary,
+														  target: self,
+														  action: #selector(didSelectWorkFileItem))
 				let item = NSToolbarItem(itemIdentifier: .init(itemIdentifier.rawValue))
 				item.view = segmentedControl
 				return item
@@ -137,11 +165,26 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	}
 	
 	@objc
-	func didSelectFileItem(segmentedControl: NSSegmentedControl) {
-		if let item = FileItem(rawValue: segmentedControl.selectedSegment) {
-			debugPrint("did select file item \(item.string)")
+	func didSelectMapFileItem(segmentedControl: NSSegmentedControl) {
+		if let item = MapFileItem(rawValue: segmentedControl.selectedSegment) {
+			debugPrint("did select map file item \(item.string)")
 			DispatchQueue.main.async { [weak self] in
 				self?.mainDelegate?.didAskMapLoad()
+			}
+		}
+	}
+	
+	@objc
+	func didSelectWorkFileItem(segmentedControl: NSSegmentedControl) {
+		if let item = WorkFileItem(rawValue: segmentedControl.selectedSegment) {
+			debugPrint("did select work file item \(item.string)")
+			DispatchQueue.main.async { [weak self] in
+				switch item {
+				case .load:
+					self?.mainDelegate?.didAskWorkLoad()
+				case .save:
+					self?.mainDelegate?.didAskWorkSave()
+				}
 			}
 		}
 	}

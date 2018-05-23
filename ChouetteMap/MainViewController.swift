@@ -11,7 +11,11 @@ import Cocoa
 class MainViewController: NSViewController {
 	
 	private let mapView = MapView(frame: .zero)
-	private var model: MainModel
+	private var model: MainModel {
+		didSet {
+			self.loadModel()
+		}
+	}
 	
 	//MARK: - Lifecycle
 	
@@ -58,16 +62,24 @@ class MainViewController: NSViewController {
 
 	//MARK: - Public
 	
-	func loadMap(from path: String) {
-		debugPrint("load path \(path)")
-		if let model = MainModel(mapPath: path) {
+	func loadMap(from url: URL) {
+		if let model = MainModel(mapPath: url.path) {
 			self.model = model
-			self.loadModel()
 		}
 	}
 	
-	func loadModel(from path: String) {
-		
+	func loadModel(from url: URL) {
+		if let data = try? Data(contentsOf: url) {
+			if let model = MainModel(json: data) {
+				self.model = model
+			}
+		}
+	}
+	
+	func saveModel(to url: URL) {
+		if let data = self.model.asJSON() {
+			try? data.write(to: url)
+		}
 	}
 	
 	func zoom(_ direction: MainToolbar.ZoomDirection) {

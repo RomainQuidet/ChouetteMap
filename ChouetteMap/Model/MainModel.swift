@@ -30,4 +30,20 @@ struct MainModel: Codable {
 		let firstLayer = CMLayer(label: "Layer 1", geometries: [])
 		self.layers.append(firstLayer)
 	}
+	
+	init?(json: Data) {
+		let decoder = JSONDecoder()
+		if let model = try? decoder.decode(MainModel.self, from: json) {
+			self = model
+		}
+		else {
+			return nil
+		}
+	}
+	
+	func asJSON() -> Data? {
+		let encoder = JSONEncoder()
+		let data = try? encoder.encode(self)
+		return data
+	}
 }

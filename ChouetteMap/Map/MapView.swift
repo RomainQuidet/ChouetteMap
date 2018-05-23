@@ -40,5 +40,6 @@ class MapView: NSScrollView {
 		let imageView = MapImageView(image: image)
 		imageView.frame = NSMakeRect(0, 0, size.width, size.height)
 		self.documentView = imageView
+		self.needsDisplay = true
 	}
 }

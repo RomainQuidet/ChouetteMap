@@ -47,9 +47,9 @@ class MainWindowController: NSWindowController, MainToolbarDelegate {
 		panel.allowedFileTypes = ["jpg","png"]
 		panel.beginSheetModal(for: self.window!) { (response) in
 			if response == NSApplication.ModalResponse.OK {
-				if let path = panel.urls.first?.path,
+				if let url = panel.urls.first,
 					let viewController = self.window?.contentViewController as? MainViewController {
-					viewController.loadMap(from: path)
+					viewController.loadMap(from: url)
 				}
 			}
 			else {
@@ -57,5 +57,45 @@ class MainWindowController: NSWindowController, MainToolbarDelegate {
 			}
 		}
 	}
-
+	
+	func didAskWorkSave() {
+		let panel = NSSavePanel()
+		panel.title = "Save your work"
+		panel.prompt = "Save"
+		panel.canCreateDirectories = true
+		panel.nameFieldLabel = "ChouetteWork.json"
+		panel.message = "Save your configuration, map and drawings"
+		panel.allowedFileTypes = ["json"]
+		panel.beginSheetModal(for: self.window!) { (response) in
+			if response == NSApplication.ModalResponse.OK {
+				if let url = panel.url,
+					let viewController = self.window?.contentViewController as? MainViewController {
+					viewController.saveModel(to: url)
+				}
+			}
+			else {
+				debugPrint("no file selected")
+			}
+		}
+	}
+	
+	func didAskWorkLoad() {
+		let panel = NSOpenPanel()
+		panel.allowsMultipleSelection = false
+		panel.canChooseDirectories = false
+		panel.canCreateDirectories = false
+		panel.canChooseFiles = true
+		panel.allowedFileTypes = ["json"]
+		panel.beginSheetModal(for: self.window!) { (response) in
+			if response == NSApplication.ModalResponse.OK {
+				if let url = panel.urls.first,
+					let viewController = self.window?.contentViewController as? MainViewController {
+					viewController.loadModel(from: url)
+				}
+			}
+			else {
+				debugPrint("no file selected")
+			}
+		}
+	}
 }
