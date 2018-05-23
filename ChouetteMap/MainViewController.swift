@@ -58,6 +58,14 @@ class MainViewController: NSViewController {
 
 	//MARK: - Public
 	
+	func loadMap(from path: String) {
+		debugPrint("load path \(path)")
+		if let model = MainModel(mapPath: path) {
+			self.model = model
+			self.loadModel()
+		}
+	}
+	
 	func loadModel(from path: String) {
 		
 	}

@@ -37,5 +37,25 @@ class MainWindowController: NSWindowController, MainToolbarDelegate {
 			viewController.zoom(direction)
 		}
 	}
+	
+	func didAskMapLoad() {
+		let panel = NSOpenPanel()
+		panel.allowsMultipleSelection = false
+		panel.canChooseDirectories = false
+		panel.canCreateDirectories = false
+		panel.canChooseFiles = true
+		panel.allowedFileTypes = ["jpg","png"]
+		panel.beginSheetModal(for: self.window!) { (response) in
+			if response == NSApplication.ModalResponse.OK {
+				if let path = panel.urls.first?.path,
+					let viewController = self.window?.contentViewController as? MainViewController {
+					viewController.loadMap(from: path)
+				}
+			}
+			else {
+				debugPrint("no file selected")
+			}
+		}
+	}
 
 }
