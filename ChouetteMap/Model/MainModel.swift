@@ -34,6 +34,9 @@ struct MainModel: Codable {
 	init?(json: Data) {
 		let decoder = JSONDecoder()
 		if let model = try? decoder.decode(MainModel.self, from: json) {
+			guard FileManager.default.fileExists(atPath: model.mapPath) == true else {
+				return nil
+			}
 			self = model
 		}
 		else {

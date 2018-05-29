@@ -17,6 +17,8 @@ class MainViewController: NSViewController {
 		}
 	}
 	
+	let lastWorkConfigSavePathUserDefaultKey = "lastWorkConfigSavePathUserDefaultKey"
+	
 	//MARK: - Lifecycle
 	
 	override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
@@ -42,12 +44,16 @@ class MainViewController: NSViewController {
 		mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
 		mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
 		
-		self.loadModel()
+		if let url = UserDefaults.standard.url(forKey: lastWorkConfigSavePathUserDefaultKey) {
+			self.loadModel(from: url)
+		}
+		else {
+			self.loadModel()
+		}
 	}
 	
 	override func viewWillAppear() {
 		super.viewWillAppear()
-		
 	}
 	
 	override func viewDidAppear() {
@@ -69,16 +75,21 @@ class MainViewController: NSViewController {
 	}
 	
 	func loadModel(from url: URL) {
-		if let data = try? Data(contentsOf: url) {
+		do {
+			let data = try Data(contentsOf: url)
 			if let model = MainModel(json: data) {
 				self.model = model
 			}
+		}
+		catch {
+			debugPrint("read config failed \(error)")
 		}
 	}
 	
 	func saveModel(to url: URL) {
 		if let data = self.model.asJSON() {
 			try? data.write(to: url)
+			UserDefaults.standard.set(url, forKey: lastWorkConfigSavePathUserDefaultKey)
 		}
 	}
 	
@@ -99,6 +110,7 @@ class MainViewController: NSViewController {
 	
 	private func loadModel() {
 		guard let image = NSImage(contentsOfFile: self.model.mapPath) else {
+			debugPrint("map load fails \(self.model.mapPath)")
 			return
 		}
 		mapView.loadMap(image)
