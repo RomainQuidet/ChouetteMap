@@ -11,7 +11,9 @@ import QuartzCore
 
 class MapImageView: NSImageView, DrawingToolDelegate {
 	
-	let geo = PointAndAngleDrawingTool()
+	var zoom: CGFloat = 1
+	
+	private let geo = PointAndAngleDrawingTool()
 	private var geometries = [DrawingGeometry]()
 	
 	override init(frame frameRect: NSRect) {
@@ -52,7 +54,7 @@ class MapImageView: NSImageView, DrawingToolDelegate {
 		for geometry in self.geometries {
 			context.addPath(geometry.drawingPath)
 			context.setStrokeColor(.black)
-			context.setLineWidth(geometry.geometry.width)
+			context.setLineWidth(geometry.geometry.width / zoom)
 			context.strokePath()
 		}
 	}

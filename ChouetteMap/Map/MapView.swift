@@ -44,5 +44,8 @@ class MapView: NSScrollView {
 	
 	func setZoom(_ zoom: CGFloat) {
 		self.magnification = zoom
+		if let imageView = self.documentView as? MapImageView {
+			imageView.zoom = zoom
+		}
 	}
 }

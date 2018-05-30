@@ -47,7 +47,7 @@ class PointAndAngleDrawingTool: DrawingTool {
 			debugPrint("Error, set canvas size and select a point first")
 			return
 		}
-		let maxHyp = sqrt(canvas.width*canvas.width + canvas.height*canvas.height) / 2
+		let maxHyp = sqrt(canvas.width*canvas.width + canvas.height*canvas.height)
 		let deltaX = CGFloat(angle.cos) * maxHyp
 		let deltaY = CGFloat(angle.sin) * maxHyp
 		
