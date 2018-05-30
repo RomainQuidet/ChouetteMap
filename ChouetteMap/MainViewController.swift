@@ -11,11 +11,7 @@ import Cocoa
 class MainViewController: NSViewController {
 	
 	private let mapView = MapView(frame: .zero)
-	private var model: MainModel {
-		didSet {
-			self.loadModel()
-		}
-	}
+	private var model: MainModel
 	
 	let lastWorkConfigSavePathUserDefaultKey = "lastWorkConfigSavePathUserDefaultKey"
 	
@@ -79,6 +75,7 @@ class MainViewController: NSViewController {
 			let data = try Data(contentsOf: url)
 			if let model = MainModel(json: data) {
 				self.model = model
+				self.loadModel()
 			}
 		}
 		catch {
@@ -103,7 +100,7 @@ class MainViewController: NSViewController {
 			self.model.lastZoom -= step
 		}
 		
-		mapView.magnification = self.model.lastZoom
+		mapView.setZoom(self.model.lastZoom)
 	}
 	
 	//MARK: - Private
@@ -114,7 +111,7 @@ class MainViewController: NSViewController {
 			return
 		}
 		mapView.loadMap(image)
-		mapView.magnification = self.model.lastZoom
+		mapView.setZoom(self.model.lastZoom)
 	}
 }
 

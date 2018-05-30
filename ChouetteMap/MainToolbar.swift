@@ -157,7 +157,6 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	@objc
 	func didSelectZoomItem(segmentedControl: NSSegmentedControl) {
 		if let zoomDirection = ZoomDirection(rawValue: segmentedControl.indexOfSelectedItem) {
-			debugPrint("didSelectZoomItem \(zoomDirection.string)")
 			DispatchQueue.main.async { [weak self] in
 				self?.mainDelegate?.didZoom(direction: zoomDirection)
 			}
@@ -167,9 +166,13 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	@objc
 	func didSelectMapFileItem(segmentedControl: NSSegmentedControl) {
 		if let item = MapFileItem(rawValue: segmentedControl.selectedSegment) {
-			debugPrint("did select map file item \(item.string)")
 			DispatchQueue.main.async { [weak self] in
-				self?.mainDelegate?.didAskMapLoad()
+				switch item {
+				case .map:
+					self?.mainDelegate?.didAskMapLoad()
+				case .ratio:
+					debugPrint("TODO ratio")
+				}
 			}
 		}
 	}
@@ -177,7 +180,6 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	@objc
 	func didSelectWorkFileItem(segmentedControl: NSSegmentedControl) {
 		if let item = WorkFileItem(rawValue: segmentedControl.selectedSegment) {
-			debugPrint("did select work file item \(item.string)")
 			DispatchQueue.main.async { [weak self] in
 				switch item {
 				case .load:

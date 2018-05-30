@@ -10,7 +10,6 @@ import Cocoa
 
 class MapView: NSScrollView {
 	
-	
 	//MARK: - Lifecycle
 	
 	override init(frame frameRect: NSRect) {
@@ -41,5 +40,9 @@ class MapView: NSScrollView {
 		imageView.frame = NSMakeRect(0, 0, size.width, size.height)
 		self.documentView = imageView
 		self.needsDisplay = true
+	}
+	
+	func setZoom(_ zoom: CGFloat) {
+		self.magnification = zoom
 	}
 }
