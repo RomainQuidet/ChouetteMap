@@ -14,7 +14,7 @@ class CMLine: CMGeometry {
 	
 	required init(center: NSPoint, angle: Angle, color: NSColor = .black, width: Float = 2) {
 		self.angle = angle
-		super.init(center: center, color: color, width: width)
+		super.init(center: center)
 	}
 	
 	required init(from decoder: Decoder) throws {

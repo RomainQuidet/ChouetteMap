@@ -9,10 +9,20 @@
 import Cocoa
 import QuartzCore
 
-class MapImageView: NSImageView {
+class MapImageView: NSImageView, DrawingToolDelegate {
 	
-	var point: NSPoint?
-
+	let geo = PointAndAngleDrawingTool()
+	private var geometries = [DrawingGeometry]()
+	
+	override init(frame frameRect: NSRect) {
+		super.init(frame: frameRect)
+		geo.delegate = self
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
 
@@ -29,24 +39,28 @@ class MapImageView: NSImageView {
 		let eventLocation = event.locationInWindow
 		let localLocation = self.convert(eventLocation, from: nil)
 		debugPrint("mouse down at \(eventLocation) - \(localLocation)")
-		self.point = localLocation
-		self.setNeedsDisplay()
+		self.geo.start(with: self.bounds.size)
+		self.geo.didClick(at: localLocation, found: nil)
+		DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+			self.geo.set(angle: Angle(degrees: 12))
+		}
 	}
 	
 	//MARK: - Drawing
 	
 	private func drawLine(inContext context: CGContext) {
-		if let point = self.point {
-			let path = CGMutablePath()
-			path.move(to: point)
-			let endpoint = NSPoint(x: point.x + 100, y: point.y + 55)
-			path.addLine(to: endpoint)
-			context.addPath(path)
+		for geometry in self.geometries {
+			context.addPath(geometry.drawingPath)
 			context.setStrokeColor(.black)
-			context.setLineWidth(2)
+			context.setLineWidth(geometry.geometry.width)
 			context.strokePath()
 		}
-		
 	}
-    
+	
+	//MARK: - DrawingToolDelegate
+	
+	func didCreate(_ geometry: DrawingGeometry) {
+		self.geometries.append(geometry)
+		self.setNeedsDisplay()
+	}
 }

@@ -16,14 +16,15 @@ class CMGeometry: Codable {
 	var colorG: Int
 	var colorB: Int
 	
-	var width: Float
+	var width: CGFloat
 		
-	init(center: NSPoint, color: NSColor = .black, width: Float = 2) {
+	init(center: NSPoint, color: NSColor = .black, width: CGFloat = 2) {
 		self.center = center
 		
-		colorR = Int(color.redComponent * 255)
-		colorG = Int(color.greenComponent * 255)
-		colorB = Int(color.blueComponent * 255)
+		let decodedColor = color.usingColorSpace(NSColorSpace.deviceRGB)!
+		colorR = Int(decodedColor.redComponent * 255)
+		colorG = Int(decodedColor.greenComponent * 255)
+		colorB = Int(decodedColor.blueComponent * 255)
 		
 		self.width = width
 	}
