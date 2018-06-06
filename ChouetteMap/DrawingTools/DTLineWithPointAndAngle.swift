@@ -8,17 +8,17 @@
 
 import Cocoa
 
-class PointAndAngleDrawingTool: DrawingTool {
+class DTLineWithPointAndAngle: DrawingTool {
 	
 	private var canvasSize: NSSize?
-	private var initialPoint: NSPoint?
+	private(set) var initialPoint: NSPoint?
 	
 	//MARK: DrawingTool
 	
 	weak var delegate: DrawingToolDelegate?
 	
 	var title: String? {
-		return "1ptA"
+		return "L=1pt+A"
 	}
 	
 	var icon: NSImage?

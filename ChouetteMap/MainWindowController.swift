@@ -98,4 +98,10 @@ class MainWindowController: NSWindowController, MainToolbarDelegate {
 			}
 		}
 	}
+	
+	func didSelect(_ drawingTool: DrawingTool) {
+		if let viewController = self.window?.contentViewController as? MainViewController {
+			viewController.select(drawingTool)
+		}
+	}
 }

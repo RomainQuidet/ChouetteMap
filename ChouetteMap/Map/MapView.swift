@@ -48,4 +48,10 @@ class MapView: NSScrollView {
 			imageView.zoom = zoom
 		}
 	}
+	
+	func setCurrentDrawingTool(_ tool: DrawingTool) {
+		if let imageView = self.documentView as? MapImageView {
+			imageView.set(tool)
+		}
+	}
 }

@@ -13,6 +13,7 @@ protocol MainToolbarDelegate: class {
 	func didAskMapLoad()
 	func didAskWorkSave()
 	func didAskWorkLoad()
+	func didSelect(_ drawingTool: DrawingTool)
 }
 
 fileprivate extension MainToolbar.ZoomDirection {
@@ -80,6 +81,10 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 								  ItemsIdentifiers.ZoomItems,
 								  ItemsIdentifiers.MapFileItem,
 								  ItemsIdentifiers.WorkFileItem]
+	
+	private let drawingTools: [DrawingTool] = [DTLineWithPointAndAngle(),
+											   DTLineWithPointAndPoint()]
+	
 
 	override init(identifier: NSToolbar.Identifier) {
 		self.availableItemsIdentifiers = allowedItemIds.map({ (itemIdentifier) -> NSToolbarItem.Identifier in
@@ -99,7 +104,10 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 		if let identifier = ItemsIdentifiers(rawValue: itemIdentifier.rawValue) {
 			switch identifier {
 			case .GeometryItems:
-				let segmentedControl = NSSegmentedControl(labels: ["Point1", "Point2", "Circle1", "Circle2"], trackingMode: .selectOne, target: self, action: #selector(didSelectGeometryItem))
+				let labels = self.drawingTools.map { (drawingTool) -> String in
+					return drawingTool.title!
+				}
+				let segmentedControl = NSSegmentedControl(labels: labels, trackingMode: .selectOne, target: self, action: #selector(didSelectGeometryItem))
 				let item = NSToolbarItem(itemIdentifier: .init(itemIdentifier.rawValue))
 				item.view = segmentedControl
 				return item
@@ -151,7 +159,11 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	
 	@objc
 	func didSelectGeometryItem(segmentedControl: NSSegmentedControl) {
-		debugPrint("didSelectPointItem")
+		let drawingTool = self.drawingTools[segmentedControl.selectedSegment]
+		debugPrint("did select drawing item \(drawingTool.title!)")
+		DispatchQueue.main.async { [weak self] in
+			self?.mainDelegate?.didSelect(drawingTool)
+		}
 	}
 	
 	@objc

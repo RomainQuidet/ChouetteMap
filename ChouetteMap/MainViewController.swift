@@ -103,6 +103,10 @@ class MainViewController: NSViewController {
 		mapView.setZoom(self.model.lastZoom)
 	}
 	
+	func select(_ drawingTool: DrawingTool) {
+		mapView.setCurrentDrawingTool(drawingTool)
+	}
+	
 	//MARK: - Private
 	
 	private func loadModel() {

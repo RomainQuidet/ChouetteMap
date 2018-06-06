@@ -13,12 +13,11 @@ class MapImageView: NSImageView, DrawingToolDelegate {
 	
 	var zoom: CGFloat = 1
 	
-	private let geo = PointAndAngleDrawingTool()
 	private var geometries = [DrawingGeometry]()
+	private var currentDrawingTool: DrawingTool?
 	
 	override init(frame frameRect: NSRect) {
 		super.init(frame: frameRect)
-		geo.delegate = self
 	}
 	
 	required init?(coder: NSCoder) {
@@ -35,16 +34,25 @@ class MapImageView: NSImageView, DrawingToolDelegate {
 		drawLine(inContext: context)
     }
 	
+	//MARK: - Public
+	
+	func set(_ drawingTool: DrawingTool) {
+		self.currentDrawingTool?.delegate = nil
+		self.currentDrawingTool?.reset()
+		self.currentDrawingTool = drawingTool
+		self.currentDrawingTool?.delegate = self
+		self.currentDrawingTool?.reset()
+		self.currentDrawingTool?.start(with: self.bounds.size)
+	}
+	
 	//MARK: - Mouse Events
 	
 	override func mouseDown(with event: NSEvent) {
 		let eventLocation = event.locationInWindow
 		let localLocation = self.convert(eventLocation, from: nil)
 		debugPrint("mouse down at \(eventLocation) - \(localLocation)")
-		self.geo.start(with: self.bounds.size)
-		self.geo.didClick(at: localLocation, found: nil)
-		DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-			self.geo.set(angle: Angle(degrees: 12))
+		if let drawingTool = self.currentDrawingTool {
+			drawingTool.didClick(at: localLocation, found: nil)
 		}
 	}
 	
@@ -64,5 +72,6 @@ class MapImageView: NSImageView, DrawingToolDelegate {
 	func didCreate(_ geometry: DrawingGeometry) {
 		self.geometries.append(geometry)
 		self.setNeedsDisplay()
+		self.currentDrawingTool?.reset()
 	}
 }
