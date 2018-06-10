@@ -10,6 +10,7 @@ import Cocoa
 
 class MainViewController: NSViewController {
 	
+	private let defaultMapPath = Bundle.main.pathForImageResource(NSImage.Name("defaultMap.jpg"))!
 	private let mapView = MapView(frame: .zero)
 	private var model: MainModel
 	
@@ -18,16 +19,12 @@ class MainViewController: NSViewController {
 	//MARK: - Lifecycle
 	
 	override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
-		let path = Bundle.main.pathForImageResource(NSImage.Name("defaultMap.jpg"))!
-		self.model = MainModel(mapPath: path)!
-		
+		self.model = MainModel(mapPath: defaultMapPath)!
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 	}
 	
 	required init?(coder: NSCoder) {
-		let path = Bundle.main.pathForImageResource(NSImage.Name("defaultMap.jpg"))!
-		self.model = MainModel(mapPath: path)!
-		
+		self.model = MainModel(mapPath: defaultMapPath)!
 		super.init(coder: coder)
 	}
 	
@@ -54,6 +51,7 @@ class MainViewController: NSViewController {
 	
 	override func viewDidAppear() {
 		mapView.flashScrollers()
+		mapView.setMapScale(self.model.mapScale)
 	}
 
 	override var representedObject: Any? {
@@ -67,6 +65,7 @@ class MainViewController: NSViewController {
 	func loadMap(from url: URL) {
 		if let model = MainModel(mapPath: url.path) {
 			self.model = model
+			self.loadModel()
 		}
 	}
 	
@@ -75,6 +74,11 @@ class MainViewController: NSViewController {
 			let data = try Data(contentsOf: url)
 			if let model = MainModel(json: data) {
 				self.model = model
+				self.loadModel()
+			}
+			else {
+				debugPrint("failed to read model from data, fallback to default model")
+				self.model = MainModel(mapPath: defaultMapPath)!
 				self.loadModel()
 			}
 		}
@@ -107,6 +111,15 @@ class MainViewController: NSViewController {
 		mapView.setCurrentDrawingTool(drawingTool)
 	}
 	
+	func select(_ measureTool: MeasureTool) {
+		mapView.setCurrentMeasureTool(measureTool)
+	}
+	
+	func setMapScale(_ scale: UInt) {
+		self.model.mapScale = scale
+		self.mapView.setMapScale(scale)
+	}
+	
 	//MARK: - Private
 	
 	private func loadModel() {
@@ -115,6 +128,7 @@ class MainViewController: NSViewController {
 			return
 		}
 		mapView.loadMap(image)
+		mapView.setMapScale(self.model.mapScale)
 		mapView.setZoom(self.model.lastZoom)
 	}
 }

@@ -21,4 +21,10 @@ extension NSPoint {
 		let result = Angle(radians: alpha)
 		return result
 	}
+	
+	func distance(to point: NSPoint) -> Double {
+		let deltaX = Double(point.x - self.x)
+		let deltaY = Double(point.y - self.y)
+		return sqrt(pow(deltaX, 2) + pow(deltaY, 2))
+	}
 }

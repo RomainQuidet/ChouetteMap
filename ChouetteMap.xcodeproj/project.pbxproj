@@ -27,6 +27,8 @@
 		7A21FE3120B4AAFC008B0C80 /* MapImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A21FE3020B4AAFC008B0C80 /* MapImageView.swift */; };
 		7A2C69D520C866CC002FFAEB /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C69D420C866CC002FFAEB /* Point.swift */; };
 		7A2C69D720C86E76002FFAEB /* DTLineWithPointAndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C69D620C86E76002FFAEB /* DTLineWithPointAndPoint.swift */; };
+		7A2C69DA20CD7DD3002FFAEB /* MeasureTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C69D920CD7DD3002FFAEB /* MeasureTool.swift */; };
+		7A2C69DC20CD7E5E002FFAEB /* MTPointToPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C69DB20CD7E5E002FFAEB /* MTPointToPoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +55,8 @@
 		7A21FE3020B4AAFC008B0C80 /* MapImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapImageView.swift; sourceTree = "<group>"; };
 		7A2C69D420C866CC002FFAEB /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 		7A2C69D620C86E76002FFAEB /* DTLineWithPointAndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTLineWithPointAndPoint.swift; sourceTree = "<group>"; };
+		7A2C69D920CD7DD3002FFAEB /* MeasureTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureTool.swift; sourceTree = "<group>"; };
+		7A2C69DB20CD7E5E002FFAEB /* MTPointToPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTPointToPoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,7 @@
 		7A21FE0820B406BC008B0C80 /* ChouetteMap */ = {
 			isa = PBXGroup;
 			children = (
+				7A2C69D820CD7DBC002FFAEB /* MeasureTools */,
 				7A00AE3820BF35EE00712F76 /* DrawingTools */,
 				7A21FE2D20B49EC2008B0C80 /* Map */,
 				7A21FE1D20B44139008B0C80 /* Model */,
@@ -141,6 +146,15 @@
 				7A21FE3020B4AAFC008B0C80 /* MapImageView.swift */,
 			);
 			path = Map;
+			sourceTree = "<group>";
+		};
+		7A2C69D820CD7DBC002FFAEB /* MeasureTools */ = {
+			isa = PBXGroup;
+			children = (
+				7A2C69D920CD7DD3002FFAEB /* MeasureTool.swift */,
+				7A2C69DB20CD7E5E002FFAEB /* MTPointToPoint.swift */,
+			);
+			path = MeasureTools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -227,10 +241,12 @@
 				7A21FE2720B48FFC008B0C80 /* CMLine.swift in Sources */,
 				7A00AE3C20BF3BD500712F76 /* DTLineWithPointAndAngle.swift in Sources */,
 				7A21FE2520B48BCB008B0C80 /* CMCircle.swift in Sources */,
+				7A2C69DC20CD7E5E002FFAEB /* MTPointToPoint.swift in Sources */,
 				7A21FE2320B442CD008B0C80 /* CMPoint.swift in Sources */,
 				7A21FE2120B442A6008B0C80 /* CMLayer.swift in Sources */,
 				7A00AE3E20BF3DF200712F76 /* DrawingGeometry.swift in Sources */,
 				7A21FE2F20B49EDB008B0C80 /* MapView.swift in Sources */,
+				7A2C69DA20CD7DD3002FFAEB /* MeasureTool.swift in Sources */,
 				7A21FE3120B4AAFC008B0C80 /* MapImageView.swift in Sources */,
 				7A21FE1F20B44158008B0C80 /* MainModel.swift in Sources */,
 				7A2C69D720C86E76002FFAEB /* DTLineWithPointAndPoint.swift in Sources */,

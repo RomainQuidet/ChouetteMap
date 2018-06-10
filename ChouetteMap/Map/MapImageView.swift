@@ -9,12 +9,14 @@
 import Cocoa
 import QuartzCore
 
-class MapImageView: NSImageView, DrawingToolDelegate {
+class MapImageView: NSImageView, DrawingToolDelegate, MeasureToolDelegate {
 	
 	var zoom: CGFloat = 1
+	var mapScale: Double = 1
 	
 	private var geometries = [DrawingGeometry]()
 	private var currentDrawingTool: DrawingTool?
+	private var currentMeasureTool: MeasureTool?
 	
 	override init(frame frameRect: NSRect) {
 		super.init(frame: frameRect)
@@ -45,6 +47,20 @@ class MapImageView: NSImageView, DrawingToolDelegate {
 		self.currentDrawingTool?.start(with: self.bounds.size)
 	}
 	
+	func set(_ measureTool: MeasureTool) {
+		self.currentDrawingTool?.delegate = nil
+		self.currentDrawingTool?.reset()
+		self.currentDrawingTool = nil
+		
+		self.currentMeasureTool?.delegate = nil
+		self.currentMeasureTool?.reset()
+		
+		self.currentMeasureTool = measureTool
+		self.currentMeasureTool?.delegate = self
+		self.currentMeasureTool?.reset()
+		self.currentMeasureTool?.start(with: mapScale)
+	}
+	
 	//MARK: - Mouse Events
 	
 	override func mouseDown(with event: NSEvent) {
@@ -53,6 +69,9 @@ class MapImageView: NSImageView, DrawingToolDelegate {
 		debugPrint("mouse down at \(eventLocation) - \(localLocation)")
 		if let drawingTool = self.currentDrawingTool {
 			drawingTool.didClick(at: localLocation, found: nil)
+		}
+		else if let measureTool = self.currentMeasureTool {
+			measureTool.didClick(at: localLocation)
 		}
 	}
 	
@@ -73,5 +92,14 @@ class MapImageView: NSImageView, DrawingToolDelegate {
 		self.geometries.append(geometry)
 		self.setNeedsDisplay()
 		self.currentDrawingTool?.reset()
+	}
+	
+	//MARK: - MeasureToolDelegate
+	
+	func showUserText(value: String) {
+		let alert = NSAlert()
+		alert.messageText = "Measure: \(value)"
+		alert.addButton(withTitle: "OK")
+		let _ = alert.runModal()
 	}
 }

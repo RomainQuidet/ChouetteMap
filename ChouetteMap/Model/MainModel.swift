@@ -11,6 +11,7 @@ import Cocoa
 
 struct MainModel: Codable {
 	let mapPath: String
+	var mapScale: UInt = 0
 	var lastZoom: CGFloat = 1
 	let originalMapSize: NSSize
 	var layers = [CMLayer]()

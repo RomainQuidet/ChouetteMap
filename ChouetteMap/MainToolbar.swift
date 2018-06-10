@@ -11,9 +11,11 @@ import Cocoa
 protocol MainToolbarDelegate: class {
 	func didZoom(direction: MainToolbar.ZoomDirection)
 	func didAskMapLoad()
+	func didSet(mapScale: UInt)
 	func didAskWorkSave()
 	func didAskWorkLoad()
 	func didSelect(_ drawingTool: DrawingTool)
+	func didSelect(_ measureTool: MeasureTool)
 }
 
 fileprivate extension MainToolbar.ZoomDirection {
@@ -36,7 +38,7 @@ fileprivate extension MainToolbar.MapFileItem {
 			case .map:
 				return "Map"
 			case .ratio:
-				return "Ratio"
+				return "Scale"
 			}
 		}
 	}
@@ -61,9 +63,6 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	enum ZoomDirection: Int {
 		case minus = 0, plus
 	}
-	enum Geometry: Int {
-		case pointSingle = 0, pointSymetric, circleFromCenterRadius
-	}
 	enum MapFileItem: Int {
 		case map = 0, ratio
 	}
@@ -73,11 +72,12 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	}
 	
 	private enum ItemsIdentifiers: String {
-		case GeometryItems, ZoomItems, SpaceItem, MapFileItem, WorkFileItem
+		case Drawingtems, MeasureItems, ZoomItems, SpaceItem, MapFileItem, WorkFileItem
 	}
 	
 	private let availableItemsIdentifiers: [NSToolbarItem.Identifier]
-	private let allowedItemIds = [ItemsIdentifiers.GeometryItems,
+	private let allowedItemIds = [ItemsIdentifiers.Drawingtems,
+								  ItemsIdentifiers.MeasureItems,
 								  ItemsIdentifiers.ZoomItems,
 								  ItemsIdentifiers.MapFileItem,
 								  ItemsIdentifiers.WorkFileItem]
@@ -85,6 +85,7 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	private let drawingTools: [DrawingTool] = [DTLineWithPointAndAngle(),
 											   DTLineWithPointAndPoint()]
 	
+	private let measureTools: [MeasureTool] = [MTPointToPoint()]
 
 	override init(identifier: NSToolbar.Identifier) {
 		self.availableItemsIdentifiers = allowedItemIds.map({ (itemIdentifier) -> NSToolbarItem.Identifier in
@@ -103,11 +104,19 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
 		if let identifier = ItemsIdentifiers(rawValue: itemIdentifier.rawValue) {
 			switch identifier {
-			case .GeometryItems:
+			case .Drawingtems:
 				let labels = self.drawingTools.map { (drawingTool) -> String in
 					return drawingTool.title!
 				}
 				let segmentedControl = NSSegmentedControl(labels: labels, trackingMode: .selectOne, target: self, action: #selector(didSelectGeometryItem))
+				let item = NSToolbarItem(itemIdentifier: .init(itemIdentifier.rawValue))
+				item.view = segmentedControl
+				return item
+			case .MeasureItems:
+				let labels = self.measureTools.map { (measureTool) -> String in
+					return measureTool.title!
+				}
+				let segmentedControl = NSSegmentedControl(labels: labels, trackingMode: .selectOne, target: self, action: #selector(didSelectMeasureItem))
 				let item = NSToolbarItem(itemIdentifier: .init(itemIdentifier.rawValue))
 				item.view = segmentedControl
 				return item
@@ -167,6 +176,15 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	}
 	
 	@objc
+	func didSelectMeasureItem(segmentedControl: NSSegmentedControl) {
+		let measureTool = self.measureTools[segmentedControl.selectedSegment]
+		debugPrint("did select measure item \(measureTool.title!)")
+		DispatchQueue.main.async { [weak self] in
+			self?.mainDelegate?.didSelect(measureTool)
+		}
+	}
+	
+	@objc
 	func didSelectZoomItem(segmentedControl: NSSegmentedControl) {
 		if let zoomDirection = ZoomDirection(rawValue: segmentedControl.indexOfSelectedItem) {
 			DispatchQueue.main.async { [weak self] in
@@ -183,7 +201,21 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 				case .map:
 					self?.mainDelegate?.didAskMapLoad()
 				case .ratio:
-					debugPrint("TODO ratio")
+					let alert = NSAlert()
+					alert.messageText = "Map scale (meters/pixel)\r989Maxi: 169\r989Mini: 500\rtestMap: 1744"
+					alert.addButton(withTitle: "OK")
+					alert.addButton(withTitle: "Cancel")
+					let input = NSTextField(frame: NSMakeRect(0, 0, 200, 24))
+					input.stringValue = ""
+					alert.accessoryView = input
+					let button = alert.runModal()
+					if button == NSApplication.ModalResponse.alertFirstButtonReturn {
+						let scale = input.integerValue
+						if scale > 0 {
+							debugPrint("got scale \(input.stringValue) => \(scale)")
+							self?.mainDelegate?.didSet(mapScale: UInt(scale))
+						}
+					}
 				}
 			}
 		}

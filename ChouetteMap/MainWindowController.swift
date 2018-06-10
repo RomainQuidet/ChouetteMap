@@ -104,4 +104,16 @@ class MainWindowController: NSWindowController, MainToolbarDelegate {
 			viewController.select(drawingTool)
 		}
 	}
+	
+	func didSelect(_ measureTool: MeasureTool) {
+		if let viewController = self.window?.contentViewController as? MainViewController {
+			viewController.select(measureTool)
+		}
+	}
+	
+	func didSet(mapScale: UInt) {
+		if let viewController = self.window?.contentViewController as? MainViewController {
+			viewController.setMapScale(mapScale)
+		}
+	}
 }
