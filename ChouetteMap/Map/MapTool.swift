@@ -11,6 +11,7 @@ import Cocoa
 protocol MapToolDelegate: class {
 	func didCreate(_ geometry: DrawingGeometry)
 	func showUserText(value: String)
+	func delete(_ geometry: DrawingGeometry)
 }
 
 protocol MapTool {

@@ -13,6 +13,8 @@ class MapImageView: NSImageView, MapToolDelegate {
 	
 	var zoom: CGFloat = 1
 	var mapScale: Double = 1
+	var currentColor: NSColor?
+	var currentWidth: CGFloat?
 	
 	private var geometries = [DrawingGeometry]()
 	private var currentMapTool: MapTool?
@@ -45,6 +47,10 @@ class MapImageView: NSImageView, MapToolDelegate {
 		self.currentMapTool?.delegate = self
 		self.currentMapTool?.reset()
 		self.currentMapTool?.start(canvas: self.bounds.size, mapScale: self.mapScale)
+		
+		if let colorTool = mapTool as? ColorTool {
+			self.currentColor = colorTool.color
+		}
 	}
 
 	//MARK: - Mouse Events
@@ -63,7 +69,7 @@ class MapImageView: NSImageView, MapToolDelegate {
 	private func drawGeometries(inContext context: CGContext) {
 		self.geometries.forEach({ (geometry) in
 			context.addPath(geometry.drawingPath)
-			context.setStrokeColor(.black)
+			context.setStrokeColor(geometry.currentColor.cgColor)
 			context.setLineWidth(geometry.geometry.width / zoom)
 			context.strokePath()
 		})
@@ -73,6 +79,9 @@ class MapImageView: NSImageView, MapToolDelegate {
 	
 	func didCreate(_ geometry: DrawingGeometry) {
 		self.geometries.append(geometry)
+		if let color = self.currentColor {
+			geometry.geometry.updateColor(color)
+		}
 		self.setNeedsDisplay()
 		self.currentMapTool?.reset()
 	}
@@ -82,5 +91,15 @@ class MapImageView: NSImageView, MapToolDelegate {
 		alert.messageText = "Measure: \(value)"
 		alert.addButton(withTitle: "OK")
 		let _ = alert.runModal()
+	}
+	
+	func delete(_ geometry: DrawingGeometry) {
+		let index = self.geometries.index { (geometryInList) -> Bool in
+			if geometry == geometryInList { return true}
+			return false
+		}
+		if let index = index {
+			self.geometries.remove(at: index)
+		}
 	}
 }

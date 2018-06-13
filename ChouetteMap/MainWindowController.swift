@@ -10,6 +10,8 @@ import Cocoa
 
 class MainWindowController: NSWindowController, MainToolbarDelegate {
 	
+	weak var pendingColorTool: ColorTool?
+	
 	//MARK: - Lifecycle
 	
 	override init(window: NSWindow?) {
@@ -108,6 +110,33 @@ class MainWindowController: NSWindowController, MainToolbarDelegate {
 	func didSet(mapScale: UInt) {
 		if let viewController = self.window?.contentViewController as? MainViewController {
 			viewController.setMapScale(mapScale)
+		}
+	}
+	
+	func didAskForColorPanel(for tool: ColorTool) {
+		self.pendingColorTool = tool
+		let panel = NSColorPanel.shared
+		panel.styleMask = [.titled, .closable, .miniaturizable, .resizable]
+		panel.title = "Chouette colors"
+		panel.showsAlpha = false
+		panel.isFloatingPanel = true
+		panel.hidesOnDeactivate = true
+		panel.setTarget(self)
+		panel.setAction(#selector(colorChanged))
+		panel.maxSize = NSSize(width: 300, height: 600)
+		panel.center()
+		panel.makeKeyAndOrderFront(nil)
+		self.showWindow(panel)
+	}
+	
+	//MARK: - Color panel
+	
+	@objc
+	func colorChanged(_ sender: NSColorPanel) {
+		if let tool = self.pendingColorTool,
+			let viewController = self.window?.contentViewController as? MainViewController {
+			tool.color = sender.color
+			viewController.select(tool)
 		}
 	}
 }

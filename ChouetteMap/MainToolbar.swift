@@ -15,6 +15,7 @@ protocol MainToolbarDelegate: class {
 	func didAskWorkSave()
 	func didAskWorkLoad()
 	func didSelect(_ mapTool: MapTool)
+	func didAskForColorPanel(for tool: ColorTool)
 }
 
 fileprivate extension MainToolbar.ZoomDirection {
@@ -71,7 +72,7 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	}
 	
 	private enum ItemsIdentifiers: String {
-		case Drawingtems, MeasureItems, ZoomItems, SpaceItem, MapFileItem, WorkFileItem
+		case Drawingtems, MeasureItems, ZoomItems, SpaceItem, MapFileItem, WorkFileItem, ModifyingItems
 	}
 	
 	private let availableItemsIdentifiers: [NSToolbarItem.Identifier]
@@ -79,12 +80,17 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 								  ItemsIdentifiers.MeasureItems,
 								  ItemsIdentifiers.ZoomItems,
 								  ItemsIdentifiers.MapFileItem,
-								  ItemsIdentifiers.WorkFileItem]
+								  ItemsIdentifiers.WorkFileItem,
+								  ItemsIdentifiers.ModifyingItems]
 	
 	private let drawingTools: [MapTool] = [DTLineWithPointAndAngle(),
 											   DTLineWithPointAndPoint()]
 	
 	private let measureTools: [MapTool] = [MTPointToPoint()]
+	
+	private let modifyingTools: [MapTool] = [ColorTool(),
+											 WidthTool(),
+											 DeleteTool()]
 
 	override init(identifier: NSToolbar.Identifier) {
 		self.availableItemsIdentifiers = allowedItemIds.map({ (itemIdentifier) -> NSToolbarItem.Identifier in
@@ -143,6 +149,14 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 				let item = NSToolbarItem(itemIdentifier: .init(itemIdentifier.rawValue))
 				item.view = segmentedControl
 				return item
+			case .ModifyingItems:
+				let labels = self.modifyingTools.map { (tool) -> String in
+					return tool.title!
+				}
+				let segmentedControl = NSSegmentedControl(labels: labels, trackingMode: .selectOne, target: self, action: #selector(didSelectModifyingItem))
+				let item = NSToolbarItem(itemIdentifier: .init(itemIdentifier.rawValue))
+				item.view = segmentedControl
+				return item
 			default:
 				break
 			}
@@ -169,7 +183,6 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	func didSelectGeometryItem(segmentedControl: NSSegmentedControl) {
 		self.deselectToolsSegments(except: segmentedControl)
 		let drawingTool = self.drawingTools[segmentedControl.selectedSegment]
-		debugPrint("did select drawing item \(drawingTool.title!)")
 		DispatchQueue.main.async { [weak self] in
 			self?.mainDelegate?.didSelect(drawingTool)
 		}
@@ -179,9 +192,22 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	func didSelectMeasureItem(segmentedControl: NSSegmentedControl) {
 		self.deselectToolsSegments(except: segmentedControl)
 		let measureTool = self.measureTools[segmentedControl.selectedSegment]
-		debugPrint("did select measure item \(measureTool.title!)")
 		DispatchQueue.main.async { [weak self] in
 			self?.mainDelegate?.didSelect(measureTool)
+		}
+	}
+	
+	@objc
+	func didSelectModifyingItem(segmentedControl: NSSegmentedControl) {
+		self.deselectToolsSegments(except: segmentedControl)
+		let modifyingTool = self.modifyingTools[segmentedControl.selectedSegment]
+		
+		if let colorTool = modifyingTool as? ColorTool {
+			self.mainDelegate?.didAskForColorPanel(for: colorTool)
+		}
+		
+		DispatchQueue.main.async { [weak self] in
+			self?.mainDelegate?.didSelect(modifyingTool)
 		}
 	}
 	

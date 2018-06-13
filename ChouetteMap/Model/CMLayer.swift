@@ -28,6 +28,13 @@ class CMGeometry: Codable {
 		
 		self.width = width
 	}
+	
+	func updateColor(_ color: NSColor) {
+		let decodedColor = color.usingColorSpace(NSColorSpace.deviceRGB)!
+		colorR = Int(decodedColor.redComponent * 255)
+		colorG = Int(decodedColor.greenComponent * 255)
+		colorB = Int(decodedColor.blueComponent * 255)
+	}
 }
 
 struct CMLayer: Codable {
