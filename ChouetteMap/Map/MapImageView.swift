@@ -9,14 +9,13 @@
 import Cocoa
 import QuartzCore
 
-class MapImageView: NSImageView, DrawingToolDelegate, MeasureToolDelegate {
+class MapImageView: NSImageView, MapToolDelegate {
 	
 	var zoom: CGFloat = 1
 	var mapScale: Double = 1
 	
 	private var geometries = [DrawingGeometry]()
-	private var currentDrawingTool: DrawingTool?
-	private var currentMeasureTool: MeasureTool?
+	private var currentMapTool: MapTool?
 	
 	override init(frame frameRect: NSRect) {
 		super.init(frame: frameRect)
@@ -33,69 +32,51 @@ class MapImageView: NSImageView, DrawingToolDelegate, MeasureToolDelegate {
 			return
 		}
 		
-		drawLine(inContext: context)
+		drawGeometries(inContext: context)
     }
 	
 	//MARK: - Public
 	
-	func set(_ drawingTool: DrawingTool) {
-		self.currentDrawingTool?.delegate = nil
-		self.currentDrawingTool?.reset()
-		self.currentDrawingTool = drawingTool
-		self.currentDrawingTool?.delegate = self
-		self.currentDrawingTool?.reset()
-		self.currentDrawingTool?.start(with: self.bounds.size)
-	}
-	
-	func set(_ measureTool: MeasureTool) {
-		self.currentDrawingTool?.delegate = nil
-		self.currentDrawingTool?.reset()
-		self.currentDrawingTool = nil
+	func set(_ mapTool: MapTool) {
+		self.currentMapTool?.delegate = nil
+		self.currentMapTool?.reset()
 		
-		self.currentMeasureTool?.delegate = nil
-		self.currentMeasureTool?.reset()
-		
-		self.currentMeasureTool = measureTool
-		self.currentMeasureTool?.delegate = self
-		self.currentMeasureTool?.reset()
-		self.currentMeasureTool?.start(with: mapScale)
+		self.currentMapTool = mapTool
+		self.currentMapTool?.delegate = self
+		self.currentMapTool?.reset()
+		self.currentMapTool?.start(canvas: self.bounds.size, mapScale: self.mapScale)
 	}
-	
+
 	//MARK: - Mouse Events
 	
 	override func mouseDown(with event: NSEvent) {
 		let eventLocation = event.locationInWindow
 		let localLocation = self.convert(eventLocation, from: nil)
 		debugPrint("mouse down at \(eventLocation) - \(localLocation)")
-		if let drawingTool = self.currentDrawingTool {
-			drawingTool.didClick(at: localLocation, found: nil)
-		}
-		else if let measureTool = self.currentMeasureTool {
-			measureTool.didClick(at: localLocation)
+		if let mapTool = self.currentMapTool {
+			mapTool.didClick(at: localLocation, found: nil)
 		}
 	}
 	
 	//MARK: - Drawing
 	
-	private func drawLine(inContext context: CGContext) {
-		for geometry in self.geometries {
+	private func drawGeometries(inContext context: CGContext) {
+		self.geometries.forEach({ (geometry) in
 			context.addPath(geometry.drawingPath)
 			context.setStrokeColor(.black)
 			context.setLineWidth(geometry.geometry.width / zoom)
 			context.strokePath()
-		}
+		})
 	}
 	
-	//MARK: - DrawingToolDelegate
+	//MARK: - MapToolDelegate
 	
 	func didCreate(_ geometry: DrawingGeometry) {
 		self.geometries.append(geometry)
 		self.setNeedsDisplay()
-		self.currentDrawingTool?.reset()
+		self.currentMapTool?.reset()
 	}
-	
-	//MARK: - MeasureToolDelegate
-	
+
 	func showUserText(value: String) {
 		let alert = NSAlert()
 		alert.messageText = "Measure: \(value)"

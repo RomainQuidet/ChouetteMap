@@ -9,14 +9,14 @@
 import Cocoa
 import MapKit
 
-class MTPointToPoint: MeasureTool {
+class MTPointToPoint: MapTool {
 	
 	private var mapScale: Double = 0
 	private(set) var initialPoint: NSPoint?
 	
 	//MARK: DrawingTool
 	
-	weak var delegate: MeasureToolDelegate?
+	weak var delegate: MapToolDelegate?
 	
 	var title: String? {
 		return "M=1pt+1pt"
@@ -28,7 +28,7 @@ class MTPointToPoint: MeasureTool {
 		return "Measure distance between two points"
 	}
 	
-	func start(with mapScale: Double) {
+	func start(canvas: NSSize, mapScale: Double) {
 		self.mapScale = mapScale
 	}
 	
@@ -36,7 +36,7 @@ class MTPointToPoint: MeasureTool {
 		self.initialPoint = nil
 	}
 	
-	func didClick(at point: NSPoint) {
+	func didClick(at point: NSPoint, found geometry: DrawingGeometry?) {
 		if self.initialPoint == nil {
 			self.initialPoint = point
 		}

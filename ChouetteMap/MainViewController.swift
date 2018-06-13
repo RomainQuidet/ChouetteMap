@@ -107,12 +107,8 @@ class MainViewController: NSViewController {
 		mapView.setZoom(self.model.lastZoom)
 	}
 	
-	func select(_ drawingTool: DrawingTool) {
-		mapView.setCurrentDrawingTool(drawingTool)
-	}
-	
-	func select(_ measureTool: MeasureTool) {
-		mapView.setCurrentMeasureTool(measureTool)
+	func select(_ mapTool: MapTool) {
+		mapView.setCurrentMapTool(mapTool)
 	}
 	
 	func setMapScale(_ scale: UInt) {

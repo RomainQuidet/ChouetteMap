@@ -14,8 +14,7 @@ protocol MainToolbarDelegate: class {
 	func didSet(mapScale: UInt)
 	func didAskWorkSave()
 	func didAskWorkLoad()
-	func didSelect(_ drawingTool: DrawingTool)
-	func didSelect(_ measureTool: MeasureTool)
+	func didSelect(_ mapTool: MapTool)
 }
 
 fileprivate extension MainToolbar.ZoomDirection {
@@ -82,10 +81,10 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 								  ItemsIdentifiers.MapFileItem,
 								  ItemsIdentifiers.WorkFileItem]
 	
-	private let drawingTools: [DrawingTool] = [DTLineWithPointAndAngle(),
+	private let drawingTools: [MapTool] = [DTLineWithPointAndAngle(),
 											   DTLineWithPointAndPoint()]
 	
-	private let measureTools: [MeasureTool] = [MTPointToPoint()]
+	private let measureTools: [MapTool] = [MTPointToPoint()]
 
 	override init(identifier: NSToolbar.Identifier) {
 		self.availableItemsIdentifiers = allowedItemIds.map({ (itemIdentifier) -> NSToolbarItem.Identifier in
@@ -168,6 +167,7 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	
 	@objc
 	func didSelectGeometryItem(segmentedControl: NSSegmentedControl) {
+		self.deselectToolsSegments(except: segmentedControl)
 		let drawingTool = self.drawingTools[segmentedControl.selectedSegment]
 		debugPrint("did select drawing item \(drawingTool.title!)")
 		DispatchQueue.main.async { [weak self] in
@@ -177,6 +177,7 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 	
 	@objc
 	func didSelectMeasureItem(segmentedControl: NSSegmentedControl) {
+		self.deselectToolsSegments(except: segmentedControl)
 		let measureTool = self.measureTools[segmentedControl.selectedSegment]
 		debugPrint("did select measure item \(measureTool.title!)")
 		DispatchQueue.main.async { [weak self] in
@@ -233,5 +234,16 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 				}
 			}
 		}
+	}
+	
+	//MARK: - Private
+	
+	private func deselectToolsSegments(except activatedSegment: NSSegmentedControl) {
+		self.visibleItems?.forEach({ (toolbarItem) in
+			if let view = toolbarItem.view as? NSSegmentedControl,
+				view != activatedSegment {
+				view.selectedSegment = -1
+			}
+		})
 	}
 }

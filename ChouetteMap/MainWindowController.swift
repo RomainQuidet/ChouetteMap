@@ -99,15 +99,9 @@ class MainWindowController: NSWindowController, MainToolbarDelegate {
 		}
 	}
 	
-	func didSelect(_ drawingTool: DrawingTool) {
+	func didSelect(_ mapTool: MapTool) {
 		if let viewController = self.window?.contentViewController as? MainViewController {
-			viewController.select(drawingTool)
-		}
-	}
-	
-	func didSelect(_ measureTool: MeasureTool) {
-		if let viewController = self.window?.contentViewController as? MainViewController {
-			viewController.select(measureTool)
+			viewController.select(mapTool)
 		}
 	}
 	

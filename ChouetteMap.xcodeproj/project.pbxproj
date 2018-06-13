@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7A00AE3A20BF361100712F76 /* DrawingTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A00AE3920BF361100712F76 /* DrawingTool.swift */; };
 		7A00AE3C20BF3BD500712F76 /* DTLineWithPointAndAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A00AE3B20BF3BD500712F76 /* DTLineWithPointAndAngle.swift */; };
 		7A00AE3E20BF3DF200712F76 /* DrawingGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A00AE3D20BF3DF200712F76 /* DrawingGeometry.swift */; };
 		7A00AE4020BF482E00712F76 /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A00AE3F20BF482E00712F76 /* Angle.swift */; };
@@ -27,12 +26,11 @@
 		7A21FE3120B4AAFC008B0C80 /* MapImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A21FE3020B4AAFC008B0C80 /* MapImageView.swift */; };
 		7A2C69D520C866CC002FFAEB /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C69D420C866CC002FFAEB /* Point.swift */; };
 		7A2C69D720C86E76002FFAEB /* DTLineWithPointAndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C69D620C86E76002FFAEB /* DTLineWithPointAndPoint.swift */; };
-		7A2C69DA20CD7DD3002FFAEB /* MeasureTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C69D920CD7DD3002FFAEB /* MeasureTool.swift */; };
 		7A2C69DC20CD7E5E002FFAEB /* MTPointToPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C69DB20CD7E5E002FFAEB /* MTPointToPoint.swift */; };
+		7ABA3A6820D198540082AE01 /* MapTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABA3A6720D198540082AE01 /* MapTool.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7A00AE3920BF361100712F76 /* DrawingTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingTool.swift; sourceTree = "<group>"; };
 		7A00AE3B20BF3BD500712F76 /* DTLineWithPointAndAngle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTLineWithPointAndAngle.swift; sourceTree = "<group>"; };
 		7A00AE3D20BF3DF200712F76 /* DrawingGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingGeometry.swift; sourceTree = "<group>"; };
 		7A00AE3F20BF482E00712F76 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
@@ -55,8 +53,8 @@
 		7A21FE3020B4AAFC008B0C80 /* MapImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapImageView.swift; sourceTree = "<group>"; };
 		7A2C69D420C866CC002FFAEB /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 		7A2C69D620C86E76002FFAEB /* DTLineWithPointAndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTLineWithPointAndPoint.swift; sourceTree = "<group>"; };
-		7A2C69D920CD7DD3002FFAEB /* MeasureTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureTool.swift; sourceTree = "<group>"; };
 		7A2C69DB20CD7E5E002FFAEB /* MTPointToPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTPointToPoint.swift; sourceTree = "<group>"; };
+		7ABA3A6720D198540082AE01 /* MapTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTool.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +71,6 @@
 		7A00AE3820BF35EE00712F76 /* DrawingTools */ = {
 			isa = PBXGroup;
 			children = (
-				7A00AE3920BF361100712F76 /* DrawingTool.swift */,
 				7A00AE3B20BF3BD500712F76 /* DTLineWithPointAndAngle.swift */,
 				7A2C69D620C86E76002FFAEB /* DTLineWithPointAndPoint.swift */,
 				7A00AE3D20BF3DF200712F76 /* DrawingGeometry.swift */,
@@ -144,6 +141,7 @@
 			children = (
 				7A21FE2E20B49EDB008B0C80 /* MapView.swift */,
 				7A21FE3020B4AAFC008B0C80 /* MapImageView.swift */,
+				7ABA3A6720D198540082AE01 /* MapTool.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -151,7 +149,6 @@
 		7A2C69D820CD7DBC002FFAEB /* MeasureTools */ = {
 			isa = PBXGroup;
 			children = (
-				7A2C69D920CD7DD3002FFAEB /* MeasureTool.swift */,
 				7A2C69DB20CD7E5E002FFAEB /* MTPointToPoint.swift */,
 			);
 			path = MeasureTools;
@@ -245,12 +242,11 @@
 				7A21FE2320B442CD008B0C80 /* CMPoint.swift in Sources */,
 				7A21FE2120B442A6008B0C80 /* CMLayer.swift in Sources */,
 				7A00AE3E20BF3DF200712F76 /* DrawingGeometry.swift in Sources */,
+				7ABA3A6820D198540082AE01 /* MapTool.swift in Sources */,
 				7A21FE2F20B49EDB008B0C80 /* MapView.swift in Sources */,
-				7A2C69DA20CD7DD3002FFAEB /* MeasureTool.swift in Sources */,
 				7A21FE3120B4AAFC008B0C80 /* MapImageView.swift in Sources */,
 				7A21FE1F20B44158008B0C80 /* MainModel.swift in Sources */,
 				7A2C69D720C86E76002FFAEB /* DTLineWithPointAndPoint.swift in Sources */,
-				7A00AE3A20BF361100712F76 /* DrawingTool.swift in Sources */,
 				7A21FE1A20B416A9008B0C80 /* MainWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -49,13 +49,7 @@ class MapView: NSScrollView {
 		}
 	}
 	
-	func setCurrentDrawingTool(_ tool: DrawingTool) {
-		if let imageView = self.documentView as? MapImageView {
-			imageView.set(tool)
-		}
-	}
-	
-	func setCurrentMeasureTool(_ tool: MeasureTool) {
+	func setCurrentMapTool(_ tool: MapTool) {
 		if let imageView = self.documentView as? MapImageView {
 			imageView.set(tool)
 		}

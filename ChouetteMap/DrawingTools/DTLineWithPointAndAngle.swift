@@ -8,14 +8,14 @@
 
 import Cocoa
 
-class DTLineWithPointAndAngle: DrawingTool {
+class DTLineWithPointAndAngle: MapTool {
 	
 	private var canvasSize: NSSize?
 	private(set) var initialPoint: NSPoint?
 	
 	//MARK: DrawingTool
 	
-	weak var delegate: DrawingToolDelegate?
+	weak var delegate: MapToolDelegate?
 	
 	var title: String? {
 		return "L=1pt+A"
@@ -27,7 +27,7 @@ class DTLineWithPointAndAngle: DrawingTool {
 		return "Draw a line given a point and an angle"
 	}
 	
-	func start(with canvas: NSSize) {
+	func start(canvas: NSSize, mapScale: Double) {
 		self.canvasSize = canvas
 	}
 	
