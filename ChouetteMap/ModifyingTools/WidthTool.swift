@@ -30,7 +30,7 @@ class WidthTool: MapTool {
 	}
 	
 	func didClick(at point: NSPoint, found geometry: DrawingGeometry?) {
-		//
+		geometry?.geometry.width = width
 	}
 	
 	//MARK: Custom

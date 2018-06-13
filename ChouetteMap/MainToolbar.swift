@@ -205,9 +205,28 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 		if let colorTool = modifyingTool as? ColorTool {
 			self.mainDelegate?.didAskForColorPanel(for: colorTool)
 		}
-		
-		DispatchQueue.main.async { [weak self] in
-			self?.mainDelegate?.didSelect(modifyingTool)
+		else if let widthTool = modifyingTool as? WidthTool {
+			let alert = NSAlert()
+			alert.messageText = "Line width"
+			alert.addButton(withTitle: "OK")
+			alert.addButton(withTitle: "Cancel")
+			let input = NSTextField(frame: NSMakeRect(0, 0, 200, 24))
+			input.stringValue = ""
+			alert.accessoryView = input
+			let button = alert.runModal()
+			if button == NSApplication.ModalResponse.alertFirstButtonReturn {
+				let width = input.floatValue
+				if width > 0 {
+					debugPrint("got width \(input.stringValue) => \(width)")
+					widthTool.width = CGFloat(width)
+					self.mainDelegate?.didSelect(widthTool)
+				}
+			}
+		}
+		else {
+			DispatchQueue.main.async { [weak self] in
+				self?.mainDelegate?.didSelect(modifyingTool)
+			}
 		}
 	}
 	

@@ -51,6 +51,9 @@ class MapImageView: NSImageView, MapToolDelegate {
 		if let colorTool = mapTool as? ColorTool {
 			self.currentColor = colorTool.color
 		}
+		else if let widthTool = mapTool as? WidthTool {
+			self.currentWidth = widthTool.width
+		}
 	}
 
 	//MARK: - Mouse Events
@@ -81,6 +84,9 @@ class MapImageView: NSImageView, MapToolDelegate {
 		self.geometries.append(geometry)
 		if let color = self.currentColor {
 			geometry.geometry.updateColor(color)
+		}
+		if let width = self.currentWidth {
+			geometry.geometry.width = width
 		}
 		self.setNeedsDisplay()
 		self.currentMapTool?.reset()
