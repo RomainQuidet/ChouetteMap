@@ -24,3 +24,10 @@ struct DrawingGeometry: Equatable {
 					   alpha: 1)
 	}
 }
+
+extension CGPath {
+	func selectablePath(currentWidth: CGFloat) -> CGPath {
+		let result = self.copy(strokingWithWidth: max(currentWidth, 20.0), lineCap: .square, lineJoin: .round, miterLimit: 200)
+		return result
+	}
+}

@@ -62,8 +62,16 @@ class MapImageView: NSImageView, MapToolDelegate {
 		let eventLocation = event.locationInWindow
 		let localLocation = self.convert(eventLocation, from: nil)
 		debugPrint("mouse down at \(eventLocation) - \(localLocation)")
+		var hitGeometry: DrawingGeometry?
+		for geometry in self.geometries {
+			if geometry.selectionPath.contains(localLocation) {
+				debugPrint("yee mouse hit !")
+				hitGeometry = geometry
+				break
+			}
+		}
 		if let mapTool = self.currentMapTool {
-			mapTool.didClick(at: localLocation, found: nil)
+			mapTool.didClick(at: localLocation, found: hitGeometry)
 		}
 	}
 	
@@ -106,6 +114,7 @@ class MapImageView: NSImageView, MapToolDelegate {
 		}
 		if let index = index {
 			self.geometries.remove(at: index)
+			self.setNeedsDisplay()
 		}
 	}
 }

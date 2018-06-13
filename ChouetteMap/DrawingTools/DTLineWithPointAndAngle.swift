@@ -57,9 +57,9 @@ class DTLineWithPointAndAngle: MapTool {
 		path.addLine(to: endpoint)
 		
 		let line = CMLine(center: point, angle: angle)
+		let selectablePath = path.selectablePath(currentWidth: line.width)
 		
-		let result = DrawingGeometry(geometry: line, drawingPath: path, selectionPath: path)
-		
+		let result = DrawingGeometry(geometry: line, drawingPath: path, selectionPath: selectablePath)
 		self.delegate?.didCreate(result)
 	}
 }
