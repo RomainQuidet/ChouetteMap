@@ -9,5 +9,5 @@
 import Foundation
 
 class CMCircle: CMGeometry {
-	var radius: Double = 5
+	var radius: CGFloat = 5
 }

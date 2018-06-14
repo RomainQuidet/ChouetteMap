@@ -35,6 +35,8 @@
 		7ABA3A7320D28FED0082AE01 /* DTLineVertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABA3A7220D28FED0082AE01 /* DTLineVertical.swift */; };
 		7ABA3A7520D290A90082AE01 /* DTLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABA3A7420D290A90082AE01 /* DTLine.swift */; };
 		7ABA3A7720D292B20082AE01 /* DTLineHorizontal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABA3A7620D292B20082AE01 /* DTLineHorizontal.swift */; };
+		7ABA3A7920D294510082AE01 /* DTCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABA3A7820D294510082AE01 /* DTCircle.swift */; };
+		7ABA3A7B20D2969D0082AE01 /* DTCircleWithPointAndRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABA3A7A20D2969D0082AE01 /* DTCircleWithPointAndRadius.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +71,8 @@
 		7ABA3A7220D28FED0082AE01 /* DTLineVertical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTLineVertical.swift; sourceTree = "<group>"; };
 		7ABA3A7420D290A90082AE01 /* DTLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTLine.swift; sourceTree = "<group>"; };
 		7ABA3A7620D292B20082AE01 /* DTLineHorizontal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTLineHorizontal.swift; sourceTree = "<group>"; };
+		7ABA3A7820D294510082AE01 /* DTCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTCircle.swift; sourceTree = "<group>"; };
+		7ABA3A7A20D2969D0082AE01 /* DTCircleWithPointAndRadius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTCircleWithPointAndRadius.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,15 +89,17 @@
 		7A00AE3820BF35EE00712F76 /* DrawingTools */ = {
 			isa = PBXGroup;
 			children = (
+				7A00AE3D20BF3DF200712F76 /* DrawingGeometry.swift */,
+				7A00AE3F20BF482E00712F76 /* Angle.swift */,
+				7A2C69D420C866CC002FFAEB /* Point.swift */,
 				7ABA3A7420D290A90082AE01 /* DTLine.swift */,
 				7A00AE3B20BF3BD500712F76 /* DTLineWithPointAndAngle.swift */,
 				7A2C69D620C86E76002FFAEB /* DTLineWithPointAndPoint.swift */,
 				7ABA3A7020D28BDB0082AE01 /* DTLinePerpendicular.swift */,
 				7ABA3A7220D28FED0082AE01 /* DTLineVertical.swift */,
 				7ABA3A7620D292B20082AE01 /* DTLineHorizontal.swift */,
-				7A00AE3D20BF3DF200712F76 /* DrawingGeometry.swift */,
-				7A00AE3F20BF482E00712F76 /* Angle.swift */,
-				7A2C69D420C866CC002FFAEB /* Point.swift */,
+				7ABA3A7820D294510082AE01 /* DTCircle.swift */,
+				7ABA3A7A20D2969D0082AE01 /* DTCircleWithPointAndRadius.swift */,
 			);
 			path = DrawingTools;
 			sourceTree = "<group>";
@@ -268,6 +274,7 @@
 				7A00AE3C20BF3BD500712F76 /* DTLineWithPointAndAngle.swift in Sources */,
 				7A21FE2520B48BCB008B0C80 /* CMCircle.swift in Sources */,
 				7A2C69DC20CD7E5E002FFAEB /* MTPointToPoint.swift in Sources */,
+				7ABA3A7920D294510082AE01 /* DTCircle.swift in Sources */,
 				7A21FE2320B442CD008B0C80 /* CMPoint.swift in Sources */,
 				7ABA3A6B20D19BF70082AE01 /* ColorTool.swift in Sources */,
 				7A21FE2120B442A6008B0C80 /* CMLayer.swift in Sources */,
@@ -275,6 +282,7 @@
 				7ABA3A6D20D19D370082AE01 /* WidthTool.swift in Sources */,
 				7A00AE3E20BF3DF200712F76 /* DrawingGeometry.swift in Sources */,
 				7ABA3A7520D290A90082AE01 /* DTLine.swift in Sources */,
+				7ABA3A7B20D2969D0082AE01 /* DTCircleWithPointAndRadius.swift in Sources */,
 				7ABA3A6820D198540082AE01 /* MapTool.swift in Sources */,
 				7ABA3A7320D28FED0082AE01 /* DTLineVertical.swift in Sources */,
 				7A21FE2F20B49EDB008B0C80 /* MapView.swift in Sources */,

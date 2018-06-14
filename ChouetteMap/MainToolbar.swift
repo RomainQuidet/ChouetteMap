@@ -87,7 +87,8 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 											   DTLineWithPointAndPoint(),
 											   DTLinePerpendicular(),
 											   DTLineVertical(),
-											   DTLineHorizontal()]
+											   DTLineHorizontal(),
+											   DTCircleWithPointAndRadius()]
 	
 	private let measureTools: [MapTool] = [MTPointToPoint()]
 	

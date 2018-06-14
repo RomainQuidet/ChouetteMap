@@ -12,6 +12,7 @@ protocol MapToolDelegate: class {
 	func didCreate(_ geometry: DrawingGeometry)
 	func showUserText(value: String)
 	func delete(_ geometry: DrawingGeometry)
+	func needsRedraw()
 }
 
 protocol MapTool {

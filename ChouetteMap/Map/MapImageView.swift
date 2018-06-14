@@ -117,4 +117,8 @@ class MapImageView: NSImageView, MapToolDelegate {
 			self.setNeedsDisplay()
 		}
 	}
+	
+	func needsRedraw() {
+		self.setNeedsDisplay()
+	}
 }
