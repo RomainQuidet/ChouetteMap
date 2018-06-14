@@ -52,7 +52,7 @@ class DTCircle: MapTool {
 		let path = CGPath(ellipseIn: rect, transform: nil)
 		
 		let circle = CMCircle(center: point)
-		circle.radius = radiusFloat
+		circle.radius = radius
 		let selectablePath = path.selectablePath(currentWidth: circle.width)
 		
 		let result = DrawingGeometry(geometry: circle, drawingPath: path, selectionPath: selectablePath)

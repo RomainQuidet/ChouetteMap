@@ -68,4 +68,16 @@ class MapView: NSScrollView {
 			imageView.mapScale = localScale * pixelsPerPoints
 		}
 	}
+	
+	func loadGeometry(_ geometry: CMGeometry) {
+		if let imageView = self.documentView as? MapImageView {
+			imageView.loadGeometry(geometry)
+		}
+	}
+	
+	func setGeometryCreationDelegate(_ delegate: MapGeometryUpdateDelegate?) {
+		if let imageView = self.documentView as? MapImageView {
+			imageView.delegate = delegate
+		}
+	}
 }

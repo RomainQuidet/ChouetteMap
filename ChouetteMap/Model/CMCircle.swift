@@ -9,5 +9,15 @@
 import Foundation
 
 class CMCircle: CMGeometry {
-	var radius: CGFloat = 5
+	var radius: Double = 5	// km
+	
+	private enum CodingKeys : String, CodingKey {
+		case radius
+	}
+	
+	override func encode(to encoder: Encoder) throws {
+		try super.encode(to: encoder)
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encode(radius, forKey: .radius)
+	}
 }

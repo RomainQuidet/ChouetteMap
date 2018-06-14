@@ -29,7 +29,7 @@ class DTLinePerpendicular: DTLine {
 		if self.initialPoint == nil {
 			super.didClick(at: point, found: geometry)
 		}
-		let angle = Angle(radians: line.angle.radians + Angle.pi / 2)
+		let angle = Angle(radians: line.angle + Angle.pi / 2)
 		self.set(angle: angle)
 	}
 }

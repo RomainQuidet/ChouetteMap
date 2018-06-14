@@ -16,6 +16,8 @@ struct MainModel: Codable {
 	let originalMapSize: NSSize
 	var layers = [CMLayer]()
 	
+	private var lastSelectedLayerIndex: Int = 0
+	
 	init?(mapPath: String) {
 		guard FileManager.default.fileExists(atPath: mapPath) == true else {
 			return nil
@@ -47,7 +49,23 @@ struct MainModel: Codable {
 	
 	func asJSON() -> Data? {
 		let encoder = JSONEncoder()
+		encoder.outputFormatting = .prettyPrinted
 		let data = try? encoder.encode(self)
 		return data
+	}
+	
+	mutating
+	func appendToCurrentLayer(_ geometry: CMGeometry) {
+		self.layers[0].geometries.append(geometry)
+	}
+	
+	mutating
+	func removeFromCurrentLayer(_ geometry: CMGeometry) {
+		if let index = self.layers[0].geometries.index(where: { (geoInList) -> Bool in
+			return geometry === geoInList
+		}) {
+			self.layers[0].geometries.remove(at: index)
+		}
+		
 	}
 }

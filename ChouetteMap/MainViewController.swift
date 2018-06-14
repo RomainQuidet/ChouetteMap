@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class MainViewController: NSViewController {
+class MainViewController: NSViewController, MapGeometryUpdateDelegate {
 	
 	private let defaultMapPath = Bundle.main.pathForImageResource(NSImage.Name("defaultMap.jpg"))!
 	private let mapView = MapView(frame: .zero)
@@ -116,6 +116,16 @@ class MainViewController: NSViewController {
 		self.mapView.setMapScale(scale)
 	}
 	
+	//MARK: - MapGeometryUpdateDelegate
+	
+	func didCreateGeometry(_ geometry: CMGeometry) {
+		self.model.appendToCurrentLayer(geometry)
+	}
+	
+	func didDeleteGeometry(_ geometry: CMGeometry) {
+		self.model.removeFromCurrentLayer(geometry)
+	}
+	
 	//MARK: - Private
 	
 	private func loadModel() {
@@ -126,6 +136,13 @@ class MainViewController: NSViewController {
 		mapView.loadMap(image)
 		mapView.setMapScale(self.model.mapScale)
 		mapView.setZoom(self.model.lastZoom)
+		mapView.setGeometryCreationDelegate(nil)
+		self.model.layers.forEach { (layer) in
+			layer.geometries.forEach({ (geometry) in
+				mapView.loadGeometry(geometry)
+			})
+		}
+		mapView.setGeometryCreationDelegate(self)
 	}
 }
 

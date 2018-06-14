@@ -10,4 +10,7 @@ import Foundation
 
 class CMPoint: CMGeometry {
 	
+	override func encode(to encoder: Encoder) throws {
+		try super.encode(to: encoder)
+	}
 }

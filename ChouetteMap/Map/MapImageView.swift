@@ -9,7 +9,14 @@
 import Cocoa
 import QuartzCore
 
+protocol MapGeometryUpdateDelegate: class {
+	func didCreateGeometry(_ geometry: CMGeometry)
+	func didDeleteGeometry(_ geometry: CMGeometry)
+}
+
 class MapImageView: NSImageView, MapToolDelegate {
+	
+	weak var delegate: MapGeometryUpdateDelegate?
 	
 	var zoom: CGFloat = 1
 	var mapScale: Double = 1
@@ -55,6 +62,26 @@ class MapImageView: NSImageView, MapToolDelegate {
 			self.currentWidth = widthTool.width
 		}
 	}
+	
+	func loadGeometry(_ geometry: CMGeometry) {
+		if let point = geometry as? CMPoint {
+			debugPrint("todo : add \(point)")
+		}
+		else if let line = geometry as? CMLine {
+			let drawTool = DTLine()
+			drawTool.delegate = self
+			drawTool.start(canvas: self.bounds.size, mapScale: self.mapScale)
+			drawTool.didClick(at: line.center, found: nil)
+			drawTool.set(angle: Angle(radians: line.angle))
+		}
+		else if let circle = geometry as? CMCircle {
+			let drawTool = DTCircle()
+			drawTool.delegate = self
+			drawTool.start(canvas: self.bounds.size, mapScale: self.mapScale)
+			drawTool.didClick(at: circle.center, found: nil)
+			drawTool.set(radius: circle.radius)
+		}
+	}
 
 	//MARK: - Mouse Events
 	
@@ -98,6 +125,7 @@ class MapImageView: NSImageView, MapToolDelegate {
 		}
 		self.setNeedsDisplay()
 		self.currentMapTool?.reset()
+		self.delegate?.didCreateGeometry(geometry.geometry)
 	}
 
 	func showUserText(value: String) {
@@ -115,6 +143,7 @@ class MapImageView: NSImageView, MapToolDelegate {
 		if let index = index {
 			self.geometries.remove(at: index)
 			self.setNeedsDisplay()
+			self.delegate?.didDeleteGeometry(geometry.geometry)
 		}
 	}
 	
