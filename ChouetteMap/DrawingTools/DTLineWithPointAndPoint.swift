@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class DTLineWithPointAndPoint: DTLineWithPointAndAngle {
+class DTLineWithPointAndPoint: DTLine {
 
 	override var title: String? {
 		return "L=1pt+1pt"

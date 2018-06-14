@@ -84,7 +84,10 @@ class MainToolbar: NSToolbar, NSToolbarDelegate {
 								  ItemsIdentifiers.ModifyingItems]
 	
 	private let drawingTools: [MapTool] = [DTLineWithPointAndAngle(),
-											   DTLineWithPointAndPoint()]
+											   DTLineWithPointAndPoint(),
+											   DTLinePerpendicular(),
+											   DTLineVertical(),
+											   DTLineHorizontal()]
 	
 	private let measureTools: [MapTool] = [MTPointToPoint()]
 	
