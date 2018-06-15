@@ -14,6 +14,15 @@ class MainViewController: NSViewController, MapGeometryUpdateDelegate {
 	private let mapView = MapView(frame: .zero)
 	private var model: MainModel
 	
+	private lazy var modelLoadOnce: Void = {
+		if let url = UserDefaults.standard.url(forKey: lastWorkConfigSavePathUserDefaultKey) {
+			self.loadModel(from: url)
+		}
+		else {
+			self.loadModel()
+		}
+	}()
+	
 	let lastWorkConfigSavePathUserDefaultKey = "lastWorkConfigSavePathUserDefaultKey"
 	
 	//MARK: - Lifecycle
@@ -36,22 +45,15 @@ class MainViewController: NSViewController, MapGeometryUpdateDelegate {
 		mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
 		mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
 		mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-		
-		if let url = UserDefaults.standard.url(forKey: lastWorkConfigSavePathUserDefaultKey) {
-			self.loadModel(from: url)
-		}
-		else {
-			self.loadModel()
-		}
 	}
 	
 	override func viewWillAppear() {
 		super.viewWillAppear()
+		_ = modelLoadOnce
 	}
 	
 	override func viewDidAppear() {
 		mapView.flashScrollers()
-		mapView.setMapScale(self.model.mapScale)
 	}
 
 	override var representedObject: Any? {

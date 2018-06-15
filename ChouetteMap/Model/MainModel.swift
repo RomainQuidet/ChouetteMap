@@ -30,7 +30,7 @@ struct MainModel: Codable {
 		}
 		
 		self.originalMapSize = image.size
-		let firstLayer = CMLayer(label: "Layer 1", geometries: [])
+		let firstLayer = CMLayer("Layer 1")
 		self.layers.append(firstLayer)
 	}
 	

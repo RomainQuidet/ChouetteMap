@@ -39,6 +39,22 @@ class DTLine: MapTool {
 		self.initialPoint = point
 	}
 	
+	func reuseGeometry(_ geometry: CMGeometry) {
+		guard let geo = geometry as? CMLine else {
+			debugPrint("only use CMLine with line tool ;)")
+			return
+		}
+		guard let canvas = self.canvasSize else {
+				debugPrint("Error, set canvas size first")
+				return
+		}
+		
+		let path = self.getDrawingPath(canvasSize: canvas, point: geo.center, angle: Angle(radians: geo.angle))
+		let selectablePath = path.selectablePath(currentWidth: geo.width)
+		let result = DrawingGeometry(geometry: geo, drawingPath: path, selectionPath: selectablePath)
+		self.delegate?.didCreate(result)
+	}
+	
 	//MARK: - Specific
 	
 	func set(angle: Angle) {
@@ -47,7 +63,19 @@ class DTLine: MapTool {
 				debugPrint("Error, set canvas size and select a point first")
 				return
 		}
-		let maxHyp = sqrt(canvas.width*canvas.width + canvas.height*canvas.height)
+		
+		let path = self.getDrawingPath(canvasSize: canvas, point: point, angle: angle)
+		let line = CMLine(center: point, angle: angle)
+		let selectablePath = path.selectablePath(currentWidth: line.width)
+		
+		let result = DrawingGeometry(geometry: line, drawingPath: path, selectionPath: selectablePath)
+		self.delegate?.didCreate(result)
+	}
+	
+	//MARK: - Private
+	
+	private func getDrawingPath(canvasSize: NSSize, point: NSPoint, angle: Angle) -> CGPath {
+		let maxHyp = sqrt(canvasSize.width*canvasSize.width + canvasSize.height*canvasSize.height)
 		let deltaX = CGFloat(angle.cos) * maxHyp
 		let deltaY = CGFloat(angle.sin) * maxHyp
 		
@@ -55,11 +83,6 @@ class DTLine: MapTool {
 		path.move(to: point)
 		let endpoint = NSPoint(x: point.x + deltaX, y: point.y + deltaY)
 		path.addLine(to: endpoint)
-		
-		let line = CMLine(center: point, angle: angle)
-		let selectablePath = path.selectablePath(currentWidth: line.width)
-		
-		let result = DrawingGeometry(geometry: line, drawingPath: path, selectionPath: selectablePath)
-		self.delegate?.didCreate(result)
+		return path
 	}
 }

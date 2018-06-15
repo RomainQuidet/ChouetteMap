@@ -23,7 +23,10 @@ class CMLine: CMGeometry {
 	}
 	
 	required init(from decoder: Decoder) throws {
-		fatalError("init(from:) has not been implemented")
+		let container = try decoder.container(keyedBy: CodingKeys.self)
+		angle = try container.decode(Double.self, forKey: .angle)
+		half = try container.decode(Bool.self, forKey: .half)
+		try super.init(from: decoder)
 	}
 	
 	override func encode(to encoder: Encoder) throws {

@@ -71,15 +71,13 @@ class MapImageView: NSImageView, MapToolDelegate {
 			let drawTool = DTLine()
 			drawTool.delegate = self
 			drawTool.start(canvas: self.bounds.size, mapScale: self.mapScale)
-			drawTool.didClick(at: line.center, found: nil)
-			drawTool.set(angle: Angle(radians: line.angle))
+			drawTool.reuseGeometry(line)
 		}
 		else if let circle = geometry as? CMCircle {
 			let drawTool = DTCircle()
 			drawTool.delegate = self
 			drawTool.start(canvas: self.bounds.size, mapScale: self.mapScale)
-			drawTool.didClick(at: circle.center, found: nil)
-			drawTool.set(radius: circle.radius)
+			drawTool.reuseGeometry(circle)
 		}
 	}
 
@@ -147,7 +145,7 @@ class MapImageView: NSImageView, MapToolDelegate {
 		}
 	}
 	
-	func needsRedraw() {
+	func needsRedraw(_ geometry: DrawingGeometry) {
 		self.setNeedsDisplay()
 	}
 }

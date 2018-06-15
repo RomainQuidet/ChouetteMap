@@ -61,4 +61,35 @@ class CMGeometry: Codable {
 struct CMLayer: Codable {
 	var label: String
 	var geometries: [CMGeometry]
+	
+	private enum CodingKeys : String, CodingKey {
+		case label
+		case geometries
+	}
+	
+	init(_ label: String) {
+		self.label = label
+		self.geometries = []
+	}
+	
+	init(from decoder: Decoder) throws {
+		let container = try decoder.container(keyedBy: CMLayer.CodingKeys.self)
+		label = try container.decode(String.self, forKey: .label)
+		geometries = []
+		var geometriesToDecode = try container.nestedUnkeyedContainer(forKey: .geometries)
+		while geometriesToDecode.isAtEnd == false {
+			if let line = try? geometriesToDecode.decode(CMLine.self) {
+				geometries.append(line)
+				debugPrint("INFO: Loaded a line")
+			}
+			else if let circle = try? geometriesToDecode.decode(CMCircle.self) {
+				geometries.append(circle)
+				debugPrint("INFO: Loaded a circle")
+			}
+			else {
+				debugPrint("ERROR: can't decode geometry")
+				break
+			}
+		}
+	}
 }

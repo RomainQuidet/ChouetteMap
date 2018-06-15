@@ -30,8 +30,14 @@ class WidthTool: MapTool {
 	}
 	
 	func didClick(at point: NSPoint, found geometry: DrawingGeometry?) {
-		geometry?.geometry.width = width
-		self.delegate?.needsRedraw()
+		if let geometry = geometry {
+			geometry.geometry.width = width
+			self.delegate?.needsRedraw(geometry)
+		}
+	}
+	
+	func reuseGeometry(_ geometry: CMGeometry) {
+		//
 	}
 	
 	//MARK: Custom

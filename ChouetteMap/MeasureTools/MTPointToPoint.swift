@@ -52,4 +52,8 @@ class MTPointToPoint: MapTool {
 			self.reset()
 		}
 	}
+	
+	func reuseGeometry(_ geometry: CMGeometry) {
+		//
+	}
 }

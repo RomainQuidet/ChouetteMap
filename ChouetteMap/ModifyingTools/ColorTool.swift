@@ -31,8 +31,14 @@ class ColorTool: MapTool {
 	}
 	
 	func didClick(at point: NSPoint, found geometry: DrawingGeometry?) {
-		geometry?.geometry.updateColor(self.color)
-		self.delegate?.needsRedraw()
+		if let geometry = geometry {
+			geometry.geometry.updateColor(self.color)
+			self.delegate?.needsRedraw(geometry)
+		}
+	}
+	
+	func reuseGeometry(_ geometry: CMGeometry) {
+		//
 	}
 	
 	//MARK: - Custom

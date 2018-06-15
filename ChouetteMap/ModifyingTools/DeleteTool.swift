@@ -34,4 +34,8 @@ class DeleteTool: MapTool {
 			self.delegate?.delete(geo)
 		}
 	}
+	
+	func reuseGeometry(_ geometry: CMGeometry) {
+		//
+	}
 }

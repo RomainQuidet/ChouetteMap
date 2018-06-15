@@ -12,7 +12,7 @@ protocol MapToolDelegate: class {
 	func didCreate(_ geometry: DrawingGeometry)
 	func showUserText(value: String)
 	func delete(_ geometry: DrawingGeometry)
-	func needsRedraw()
+	func needsRedraw(_ geometry: DrawingGeometry)
 }
 
 protocol MapTool {
@@ -24,4 +24,5 @@ protocol MapTool {
 	func start(canvas: NSSize, mapScale: Double)
 	func reset()
 	func didClick(at point: NSPoint, found geometry: DrawingGeometry?)
+	func reuseGeometry(_ geometry: CMGeometry)
 }
