@@ -80,9 +80,10 @@ class DTLine: MapTool {
 		let deltaY = CGFloat(angle.sin) * maxHyp
 		
 		let path = CGMutablePath()
-		path.move(to: point)
-		let endpoint = NSPoint(x: point.x + deltaX, y: point.y + deltaY)
-		path.addLine(to: endpoint)
+		let topPoint = NSPoint(x: point.x + deltaX, y: point.y + deltaY)
+		path.move(to: topPoint)
+		let bottomPoint = NSPoint(x: point.x - deltaX, y: point.y - deltaY)
+		path.addLine(to: bottomPoint)
 		return path
 	}
 }
