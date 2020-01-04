@@ -26,7 +26,7 @@ class MainWindowController: NSWindowController, MainToolbarDelegate {
         super.windowDidLoad()
 		if let window = self.window {
 			window.title = "Chouette Map"
-			let toolbar = MainToolbar(identifier: NSToolbar.Identifier("MainToolbar"))
+			let toolbar = MainToolbar(identifier: "MainToolbar")
 			toolbar.mainDelegate = self
 			window.toolbar = toolbar
 		}

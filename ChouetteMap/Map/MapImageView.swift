@@ -134,7 +134,7 @@ class MapImageView: NSImageView, MapToolDelegate {
 	}
 	
 	func delete(_ geometry: DrawingGeometry) {
-		let index = self.geometries.index { (geometryInList) -> Bool in
+		let index = self.geometries.firstIndex { (geometryInList) -> Bool in
 			if geometry == geometryInList { return true}
 			return false
 		}

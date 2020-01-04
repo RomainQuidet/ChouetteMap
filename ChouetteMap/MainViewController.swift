@@ -10,7 +10,7 @@ import Cocoa
 
 class MainViewController: NSViewController, MapGeometryUpdateDelegate {
 	
-	private let defaultMapPath = Bundle.main.pathForImageResource(NSImage.Name("defaultMap.jpg"))!
+	private let defaultMapPath = Bundle.main.pathForImageResource("defaultMap.jpg")!
 	private let mapView = MapView(frame: .zero)
 	private var model: MainModel
 	

@@ -61,7 +61,7 @@ struct MainModel: Codable {
 	
 	mutating
 	func removeFromCurrentLayer(_ geometry: CMGeometry) {
-		if let index = self.layers[0].geometries.index(where: { (geoInList) -> Bool in
+		if let index = self.layers[0].geometries.firstIndex(where: { (geoInList) -> Bool in
 			return geometry === geoInList
 		}) {
 			self.layers[0].geometries.remove(at: index)
